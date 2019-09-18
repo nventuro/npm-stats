@@ -30,7 +30,7 @@ export default class QueryForm extends React.Component {
           Range:
           <select name='range' value={this.state.range} onChange={this.handleChange} >
             Range:
-            <option value='monthy'>Montly</option>
+            <option value='monthly'>Monthly</option>
           </select>
         </label>
         <br />
