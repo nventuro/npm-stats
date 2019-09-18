@@ -1,4 +1,5 @@
 import React from 'react';
+import { Line } from 'rc-progress';
 
 import * as moment from 'moment';
 import { getMonths, getRanges } from '../time';
@@ -9,6 +10,7 @@ export default class Statistics extends React.Component {
     super(props);
 
     this.state = {
+      progress: 0,
       records: [],
     };
   }
@@ -18,31 +20,42 @@ export default class Statistics extends React.Component {
     const start = moment('2019-01-01');
 
     const months = getMonths(start, moment());
+    const step = 100 / months.length;
 
-    const downloads = await Promise.all(getRanges([...months, moment()]).map(([start, end]) =>
-      npmStats.query(pkg, start, end)
-    ));
+    const downloads = await Promise.all(getRanges([...months, moment()]).map(async ([start, end]) => {
+      const count = await npmStats.query(pkg, start, end);
+      console.log(this.state.progress + step)
+      this.setState({ progress: this.state.progress + step });
+
+      return count;
+    }));
 
     const records = [];
     for (let i = 0; i < months.length; ++i) {
       records.push({ month: months[i], downloads: downloads[i] });
     }
 
-    this.setState( { records });
+    this.setState( { done: true, records });
   }
 
   render() {
-    return (
-      <div>
-        {
-          this.state.records.map(record =>
-            <div>
-              <text> {record.month.format('YYYY-MM')}: {record.downloads} </text>
-              <br />
-            </div>
-          )
-        }
-      </div>
-    )
+    if (this.state.done) {
+      return (
+        <div>
+          {
+            this.state.records.map(record =>
+              <div>
+                <text> {record.month.format('YYYY-MM')}: {record.downloads} </text>
+                <br />
+              </div>
+            )
+          }
+        </div>
+      )
+    } else {
+      return (
+        <Line percent={this.state.progress} strokeWidth="4" strokeColor="#D3D3D3" />
+       )
+    }
   }
 }
