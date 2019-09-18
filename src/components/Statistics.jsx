@@ -1,7 +1,8 @@
 import React from 'react';
 
-import get from 'axios';
 import * as moment from 'moment';
+import { getMonths, getRanges } from '../time';
+import * as npmStats from '../npm-stats'
 
 export default class Statistics extends React.Component {
   constructor(props) {
@@ -18,8 +19,8 @@ export default class Statistics extends React.Component {
 
     const months = getMonths(start, moment());
 
-    const downloads = await Promise.all(months.map(month =>
-      query(pkg, `${month.format('YYYY-MM-DD')}:${getMonthEnd(month).format('YYYY-MM-DD')}`)
+    const downloads = await Promise.all(getRanges([...months, moment()]).map(([start, end]) =>
+      npmStats.query(pkg, start, end)
     ));
 
     const records = [];
@@ -44,27 +45,4 @@ export default class Statistics extends React.Component {
       </div>
     )
   }
-}
-
-function getMonths(from, to) {
-  const months = [];
-
-  for (let current = from; current.isBefore(to); current = current.add(1, 'M')) {
-    months.push(current.clone());
-  }
-
-  return months;
-}
-
-function getMonthEnd(time) {
-  return time.clone().add(1, 'M').subtract(1, 'd');
-}
-
-async function query(pkg, period) {
-  const response = await get(getURL(pkg, period));
-  return response.data.downloads;
-}
-
-function getURL(pkg, period) {
-  return `https://api.npmjs.org/downloads/point/${period}/${pkg}`;
 }
