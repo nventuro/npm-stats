@@ -1,7 +1,16 @@
 {
   "name": "npm-stats",
   "version": "0.1.0",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nventuro/npm-stats.git"
+  },
+  "author": "Nicolas Venturo <nicolas.venturo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nventuro/npm-stats/issues"
+  },
+  "homepage": "https://nventuro.github.io/npm-stats",
   "dependencies": {
     "axios": "^0.19.0",
     "moment": "^2.24.0",
@@ -13,7 +22,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages --remote nventuro --dist build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -29,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
   }
 }
