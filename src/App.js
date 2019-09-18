@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import QueryForm from './QueryForm.jsx'
-import StatsDisplay from './StatsDisplay.jsx'
+import PackagesForm from './components/PackagesForm.jsx'
+import Statistics from './components/Statistics.jsx'
 
 function App() {
-  return (
+   return (
     <div className="App">
       <header className="App-header">
-      <QueryForm />
-      <StatsDisplay />
+      <PackagesForm />
+      <Statistics />
       </header>
     </div>
   );

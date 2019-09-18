@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class QueryForm extends React.Component {
+export default class PackagesForm extends React.Component {
   constructor(props) {
     super(props);
 

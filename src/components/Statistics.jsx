@@ -3,7 +3,7 @@ import React from 'react';
 import get from 'axios';
 import * as moment from 'moment';
 
-export default class StatsDisplay extends React.Component {
+export default class Statistics extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,7 +29,6 @@ export default class StatsDisplay extends React.Component {
 
     this.setState( { records });
   }
-
 
   render() {
     return (
