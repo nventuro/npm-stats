@@ -24,7 +24,7 @@ export default class Statistics extends React.Component {
 
     const downloads = await Promise.all(getRanges([...months, moment()]).map(async ([start, end]) => {
       const count = await npmStats.query(pkg, start, end);
-      console.log(this.state.progress + step)
+
       this.setState({ progress: this.state.progress + step });
 
       return count;
