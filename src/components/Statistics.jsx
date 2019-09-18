@@ -10,20 +10,21 @@ export default class Statistics extends React.Component {
     super(props);
 
     this.state = {
+      package: props.package,
+      range: props.range,
       progress: 0,
       records: [],
     };
   }
 
   async componentDidMount() {
-    const pkg = '@openzeppelin/contracts';
     const start = moment('2019-01-01');
 
     const months = getMonths(start, moment());
     const step = 100 / months.length;
 
     const downloads = await Promise.all(getRanges([...months, moment()]).map(async ([start, end]) => {
-      const count = await npmStats.query(pkg, start, end);
+      const count = await npmStats.query(this.state.package, start, end);
 
       this.setState({ progress: this.state.progress + step });
 
@@ -51,11 +52,11 @@ export default class Statistics extends React.Component {
             )
           }
         </div>
-      )
+      );
     } else {
       return (
         <Line percent={this.state.progress} strokeWidth="4" strokeColor="#D3D3D3" />
-       )
+       );
     }
   }
 }

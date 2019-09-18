@@ -5,9 +5,9 @@ export default class PackagesForm extends React.Component {
     super(props);
 
     this.state = {
-      package: '@openzeppelin/contracts',
-      range: 'Monthly',
-    }
+      package: props.package,
+      range: props.range,
+    };
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -36,6 +36,6 @@ export default class PackagesForm extends React.Component {
         <br />
         <input type='submit' value='Submit' />
       </form>
-    )
+    );
   }
 }
