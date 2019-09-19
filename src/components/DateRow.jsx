@@ -3,28 +3,17 @@ import Table from 'rc-table';
 
 import numeral from 'numeral';
 
-export default class DateRow extends React.Component {
-  constructor(props) {
-    super(props);
+export default function({ records, dateFormat }) {
+  const columns = records.map(record => ({
+    title: record.date.format(dateFormat),
+    dataIndex: record.date.format(),
+  }));
 
-    this.state = {
-      records: props.records,
-      dateFormat: props.dateFormat,
-    };
-  }
+  const data = [records.reduce((aggregate, record) =>
+    ({ ...aggregate, [record.date.format()]: numeral(record.data).format('0a') }), {}
+  )];
 
-  render() {
-    const columns = this.state.records.map(record => ({
-      title: record.date.format(this.state.dateFormat),
-      dataIndex: record.date.format(),
-    }));
-
-    const data = [this.state.records.reduce((records, record) =>
-      ({ ...records, [record.date.format()]: numeral(record.data).format('0a') }), {}
-    )];
-
-    return (
-      <Table columns={columns} data={data}/>
-    );
-  }
+  return (
+    <Table columns={columns} data={data}/>
+  );
 }
