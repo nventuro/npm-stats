@@ -1,9 +1,11 @@
 import React from 'react';
 import { Line } from 'rc-progress';
+import Table from 'rc-table';
 
-import * as moment from 'moment';
+import moment from 'moment';
+import numeral from 'numeral';
 import { getMonths, getRanges } from '../time';
-import * as npmStats from '../npm-stats'
+import { query } from '../npm-stats'
 
 export default class Statistics extends React.Component {
   constructor(props) {
@@ -24,7 +26,7 @@ export default class Statistics extends React.Component {
     const step = 100 / months.length;
 
     const downloads = await Promise.all(getRanges([...months, moment()]).map(async ([start, end]) => {
-      const count = await npmStats.query(this.state.package, start, end);
+      const count = await query(this.state.package, start, end);
 
       this.setState({ progress: this.state.progress + step });
 
@@ -40,23 +42,26 @@ export default class Statistics extends React.Component {
   }
 
   render() {
-    if (this.state.done) {
-      return (
-        <div>
-          {
-            this.state.records.map(record =>
-              <div>
-                <text> {record.month.format('YYYY-MM')}: {record.downloads} </text>
-                <br />
-              </div>
-            )
-          }
-        </div>
-      );
-    } else {
+    if (!this.state.done) {
       return (
         <Line percent={this.state.progress} strokeWidth="4" strokeColor="#D3D3D3" />
-       );
+      );
+    } else {
+      const columns = this.state.records.map(record => ({
+        title: record.month.format('MMM-YY'),
+        dataIndex: record.month.format(),
+      }));
+
+      const data = [this.state.records.reduce((records, record) =>
+        ({ ...records, [record.month.format()]: numeral(record.downloads).format('0a') })
+      )];
+
+      return (
+        <div>
+        <text>{this.state.range} downloads for {this.state.package}</text>
+        <Table columns={columns} data={data}/>
+        </div>
+      );
     }
   }
 }
