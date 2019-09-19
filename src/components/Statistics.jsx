@@ -1,9 +1,8 @@
 import React from 'react';
 import { Line } from 'rc-progress';
-import Table from 'rc-table';
+import DateRow from './DateRow';
 
 import moment from 'moment';
-import numeral from 'numeral';
 import { getMonths, getRanges } from '../time';
 import { query } from '../npm-stats'
 
@@ -20,7 +19,7 @@ export default class Statistics extends React.Component {
   }
 
   async componentDidMount() {
-    const start = moment('2019-01-01');
+    const start = moment('2018-01-01');
 
     const months = getMonths(start, moment());
     const step = 100 / months.length;
@@ -35,10 +34,21 @@ export default class Statistics extends React.Component {
 
     const records = [];
     for (let i = 0; i < months.length; ++i) {
-      records.push({ month: months[i], downloads: downloads[i] });
+      records.push({ date: months[i], data: downloads[i] });
     }
 
     this.setState( { done: true, records });
+  }
+
+  splitInSextuplets(arr) {
+    const sextuplets = [];
+
+    while (arr.length > 0) {
+      sextuplets.push(arr.slice(0, 6));
+      arr = arr.slice(6);
+    }
+
+    return sextuplets;
   }
 
   render() {
@@ -47,19 +57,14 @@ export default class Statistics extends React.Component {
         <Line percent={this.state.progress} strokeWidth="4" strokeColor="#D3D3D3" />
       );
     } else {
-      const columns = this.state.records.map(record => ({
-        title: record.month.format('MMM-YY'),
-        dataIndex: record.month.format(),
-      }));
-
-      const data = [this.state.records.reduce((records, record) =>
-        ({ ...records, [record.month.format()]: numeral(record.downloads).format('0a') })
-      )];
-
       return (
         <div>
         <text>{this.state.range} downloads for {this.state.package}</text>
-        <Table columns={columns} data={data}/>
+        {
+          this.splitInSextuplets(this.state.records).map(sextuplet =>
+            <DateRow records={sextuplet} dateFormat='MMM-YY' />
+          )
+        }
         </div>
       );
     }
