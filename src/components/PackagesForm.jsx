@@ -1,5 +1,6 @@
 import React from 'react';
 import PackageInput from './PackageInput';
+import MultiPackageInput from './MultiPackageInput';
 
 export default class PackagesForm extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ export default class PackagesForm extends React.Component {
 
   render() {
     return (
+      <>
       <form>
         <PackageInput name='package' onChange={this.handleChange} />
         <br />
@@ -34,6 +36,7 @@ export default class PackagesForm extends React.Component {
         <br />
         <input type='submit' value='Submit' />
       </form>
+      </>
     );
   }
 }
