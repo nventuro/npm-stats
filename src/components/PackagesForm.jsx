@@ -1,4 +1,5 @@
 import React from 'react';
+import PackageInput from './PackageInput';
 
 export default class PackagesForm extends React.Component {
   constructor(props) {
@@ -21,10 +22,7 @@ export default class PackagesForm extends React.Component {
   render() {
     return (
       <form>
-        <label>
-          Package:
-          <input type='text' name='package' value={this.state.package} onChange={this.handleChange} />
-        </label>
+        <PackageInput name='package' onChange={this.handleChange} />
         <br />
         <label>
           Range:
