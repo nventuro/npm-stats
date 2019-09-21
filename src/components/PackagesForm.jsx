@@ -24,8 +24,7 @@ export default class PackagesForm extends React.Component {
     return (
       <>
       <form>
-        <PackageInput name='package' onChange={this.handleChange} />
-        <br />
+        <MultiPackageInput />
         <label>
           Range:
           <select name='range' value={this.state.range} onChange={this.handleChange} >
