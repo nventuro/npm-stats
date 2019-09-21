@@ -1,5 +1,4 @@
 import React from 'react';
-import PackageInput from './PackageInput';
 import MultiPackageInput from './MultiPackageInput';
 
 export default class PackagesForm extends React.Component {

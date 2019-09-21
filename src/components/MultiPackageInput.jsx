@@ -6,42 +6,41 @@ export default class MultiPackageInput extends React.Component {
     super(props);
 
     this.state = {
-      inputs: [ '' ],
+      packages: [
+        { name: '' },
+      ],
     };
   }
 
-  addInput = () => {
+  addPackage = () => {
     this.setState({
-      inputs: [ ...this.state.inputs, '' ],
+      packages: [ ...this.state.packages, { name: '' } ],
     });
   }
 
-  removeInput = (deleteIdx) => {
+  removePackage = deleteIdx => {
     this.setState({
-      inputs: this.state.inputs.filter((_, idx) => idx !== deleteIdx),
+      packages: this.state.packages.filter((_, idx) => idx !== deleteIdx),
     });
   }
 
-  updateInput = (event) => {
-    const updateIdx = Number(event.target.name);
-    const newValue = event.target.value;
-
+  updatePackageName = updateIdx => event => {
     this.setState({
-      inputs: this.state.inputs.map((value, idx) =>
-        idx === updateIdx ? newValue : value
+      packages: this.state.packages.map((pkg, idx) =>
+        idx !== updateIdx ? pkg : { ...pkg, name: event.target.value }
       )
     });
   }
 
   render() {
     return (
-      this.state.inputs.map((value, idx) =>
+      this.state.packages.map((pkg, idx) =>
         <>
-          <PackageInput name={idx} value={value} onChange={this.updateInput} />
+          <PackageInput value={pkg.name} onChange={this.updatePackageName(idx)} />
           {
-            idx < (this.state.inputs.length - 1) ?
-              <button onClick={() => this.removeInput(idx)}>-</button> :
-              <button onClick={this.addInput}>+</button>
+            idx < (this.state.packages.length - 1) ?
+              <button type='button' onClick={() => this.removePackage(idx)}>-</button> :
+              <button type='button' onClick={this.addPackage}>+</button>
           }
         </>
       )
