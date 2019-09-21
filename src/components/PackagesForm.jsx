@@ -6,12 +6,16 @@ export default class PackagesForm extends React.Component {
     super(props);
 
     this.state = {
-      package: props.package,
+      packages: props.packages,
       range: props.range,
     };
-
-    this.handleChange = this.handleChange.bind(this);
   }
+
+  //onSubmit = event => {
+  //  event.preventDefault();
+  //  const { fname, lname, email } = this.state;
+  //  axios.post('/', { fname, lname, email })
+  //}
 
   handleChange(event) {
     this.setState({
@@ -23,7 +27,7 @@ export default class PackagesForm extends React.Component {
     return (
       <>
       <form>
-        <MultiPackageInput />
+        <MultiPackageInput packages={this.state.packages} />
         <label>
           Range:
           <select name='range' value={this.state.range} onChange={this.handleChange} >

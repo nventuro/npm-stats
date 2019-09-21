@@ -19,7 +19,7 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-        <PackagesForm package={this.state.query.package} range={this.state.query.range} />
+        <PackagesForm packages={this.state.query.packages} range={this.state.query.range} />
         <Statistics package={this.state.query.package} range={this.state.query.range} />
         </header>
       </div>

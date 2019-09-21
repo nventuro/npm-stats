@@ -5,16 +5,23 @@ export default class MultiPackageInput extends React.Component {
   constructor(props) {
     super(props);
 
+    let packages;
+    if (props.packages === undefined) {
+      packages = [ '' ];
+    } else if (!Array.isArray(props.packages)) {
+      packages = [ props.packages ];
+    } else {
+      packages = props.packages;
+    }
+
     this.state = {
-      packages: [
-        { name: '' },
-      ],
+      packages,
     };
   }
 
   addPackage = () => {
     this.setState({
-      packages: [ ...this.state.packages, { name: '' } ],
+      packages: [ ...this.state.packages, '' ],
     });
   }
 
@@ -24,10 +31,10 @@ export default class MultiPackageInput extends React.Component {
     });
   }
 
-  updatePackageName = updateIdx => event => {
+  updatePackage = updateIdx => event => {
     this.setState({
       packages: this.state.packages.map((pkg, idx) =>
-        idx !== updateIdx ? pkg : { ...pkg, name: event.target.value }
+        idx !== updateIdx ? pkg : event.target.value
       )
     });
   }
@@ -36,7 +43,7 @@ export default class MultiPackageInput extends React.Component {
     return (
       this.state.packages.map((pkg, idx) =>
         <>
-          <PackageInput value={pkg.name} onChange={this.updatePackageName(idx)} />
+          <PackageInput value={pkg} onChange={this.updatePackage(idx)} />
           {
             idx < (this.state.packages.length - 1) ?
               <button type='button' onClick={() => this.removePackage(idx)}>-</button> :
