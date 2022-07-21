@@ -12,7 +12,7 @@
   },
   "homepage": "https://nventuro.github.io/npm-stats",
   "dependencies": {
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "numeral": "^2.0.6",
     "rc-progress": "^2.5.2",
     "rc-table": "^6.8.6",
